@@ -5,8 +5,6 @@ An image quick clustering tool
 
 Prism starts with the color distribution of pictures to generate  *signatures*, abstract compact *minhash sketches*, and apply with *LSH*(locality-sensitive hashing) to find inner clusters.
 
-![bird](screenshot/bird.png)
-
 ## Introduction
 
 ### Plot a signature
@@ -41,14 +39,16 @@ To be optimized:
 
 * Vectors to be randomly generated: larger size of vectors leads to a high accuracy but also consumes more time and space. 64, 128, 256 or bigger? 
 
-![vectors](screenshot/vectors-n.png)
+![vectors](screenshot/vectors-n.jpg)
+
 *R-squared* is a statistical measure of how close the data are to the fitted regression line. Selecting 256 vectors ensures a r-squared greater than `0.9`.
 
 ## Methodology
 
-This project is based on Python. Recommend another article explaining ![R](https://cran.r-project.org/web/packages/textreuse/vignettes/textreuse-minhash.html) solution of *minhash* and *LSH*.
+This project is based on Python. Recommend [another article](https://cran.r-project.org/web/packages/textreuse/vignettes/textreuse-minhash.html) explaining this solution of *minhash* and *LSH* in R.
 
 ![LSH S-curves](screenshot/s-curve.png)
+
 LSH S-curves.
 
 ## Dataset
@@ -57,6 +57,6 @@ LSH S-curves.
 
 [*ALOI*][http://aloi.science.uva.nl/] is a color image collection of one-thousand small objects, recorded for scientific purposes. In order to capture the sensory variation in object recordings, we systematically varied viewing angle, illumination angle, and illumination color for each object, and additionally captured wide-baseline stereo images. We recorded over a hundred images of each object, yielding a total of 110,250 images for the collection.
 
-!(ill)[http://aloi.science.uva.nl/aloi/ill.jpg]
+![ill](http://aloi.science.uva.nl/aloi/ill.jpg)
 
 Illumination direction is varied in 24 configurations and for each object there are 24 pictures.
