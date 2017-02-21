@@ -1,9 +1,10 @@
 # Prism
-An image quick clustering tool
+
+An image quick clustering tool based on colour 
 
 ![page-001](screenshot/prism-page-001.jpg)
 
-Prism starts with the color distribution of pictures to generate  *signatures*, abstract compact *minhash sketches*, and apply with *LSH*(locality-sensitive hashing) to find inner clusters.
+Prism starts with the color spectrum of images to generate *signatures*, abstract compact *minhash sketches*, and apply with *LSH*(locality-sensitive hashing) to find inner clusters.
 
 ## Introduction
 
@@ -55,7 +56,7 @@ LSH S-curves.
 
 ![aloi](http://aloi.science.uva.nl/aloi/aloi.jpg)
 
-[*ALOI*][http://aloi.science.uva.nl/] is a color image collection of one-thousand small objects, recorded for scientific purposes. In order to capture the sensory variation in object recordings, we systematically varied viewing angle, illumination angle, and illumination color for each object, and additionally captured wide-baseline stereo images. We recorded over a hundred images of each object, yielding a total of 110,250 images for the collection.
+[*ALOI*](http://aloi.science.uva.nl/) is a color image collection of one-thousand small objects, recorded for scientific purposes. In order to capture the sensory variation in object recordings, we systematically varied viewing angle, illumination angle, and illumination color for each object, and additionally captured wide-baseline stereo images. We recorded over a hundred images of each object, yielding a total of 110,250 images for the collection.
 
 ![ill](http://aloi.science.uva.nl/aloi/ill.jpg)
 
