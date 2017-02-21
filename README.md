@@ -35,13 +35,13 @@ By computing dot of this sketch and sketch-matrix of the whole dataset, we will 
 
 To be optimized:
 
-* Bin size to hold digits of colours: 2, 4, 8, 16 or bigger? Function *best_range_length* describe the process of optimizing this parameter.
+* Bin size to hold digits of colours: 2, 4, 8, 16 or bigger? The *bin_size* function is used to optimize this parameter.
 
-* Vectors to be randomly generated: larger size of vectors leads to a high accuracy but also consumes more time and space. 64, 128, 256 or bigger? 
+* Vectors to be randomly generated: calculation of more vectors leads to higher accuracy but also consumes more time and memory. 64, 128, 256 or bigger? 
 
 ![vectors](screenshot/vectors-n.jpg)
 
-*R-squared* is a statistical measure of how close the data are to the fitted regression line. Selecting 256 vectors ensures a r-squared greater than `0.9`.
+*R-squared* is a statistical measure of how close the data are to the fitted regression line. Selecting *256* vectors ensures a r-squared greater than `0.9`.
 
 ## Methodology
 
@@ -59,4 +59,4 @@ LSH S-curves.
 
 ![ill](http://aloi.science.uva.nl/aloi/ill.jpg)
 
-Illumination direction is varied in 24 configurations and for each object there are 24 pictures.
+Illumination direction is varied in 24 configurations and for each object there are 24 pictures. 
