@@ -1,6 +1,6 @@
 # Prism
 
-An image quick clustering tool based on colour 
+An image quick clustering tool based on colour spectrum.
 
 ![page-001](screenshot/prism-page-001.jpg)
 
