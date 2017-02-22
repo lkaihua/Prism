@@ -1,0 +1,146 @@
+/*******************************
+            Global
+*******************************/
+
+/*--------------
+      Demo
+---------------*/
+
+#sink {
+  background-color: #FFFFFF;
+}
+
+#sink .demo.container {
+  width: 700px;
+  margin: 0px auto;
+  padding: 2em 0;
+}
+
+#sink .demo.container .example {
+  padding: 2em 0em;
+  margin: 2em 0em;
+  border-top: 1px solid #DDD;
+}
+
+#sink .demo h4 {
+  font-size: 1.5em;
+  margin: 2em 0em 1em;
+}
+#sink .demo.container .button.demo > .buttons,
+#sink .demo.container .button.demo > .button,
+#sink .demo.container .button.demo > .segment > .button {
+  margin-bottom: 0.5em;
+}
+#sink .demo.container h4:first-child {
+  font-weight: bold !important;
+  margin: 0em 0em 1em !important;
+}
+#sink .demo.container .example:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+#sink .demo.container .segment.example {
+  z-index: 1;
+}
+#sink .demo.container .ui.label:not(.empty) {
+  margin-bottom: 1em;
+}
+#sink .demo.container .segment .ui.label {
+  margin-bottom: 0em;
+}
+
+
+
+/*--------------
+      card
+---------------*/
+#card-pic{
+    width: 185px;
+    float: left;
+    display: none;
+}
+
+#card-init{
+    width: 100%;
+    height: 350px;
+    display: inline-block;
+    float: right;
+    text-align: center;
+    position: relative;
+}
+
+#card-init img{
+    margin: 0 auto;
+    opacity: 0.5;
+}
+
+#card-init #next-1-2{
+    position: absolute;
+    z-index: 99999;
+    margin-left: -110px;
+    margin-top: -20px;
+    left: 50%;
+    top: 50%;
+}
+
+.tab{
+    float: right;
+}
+
+#card-sig{
+    width: 500px;
+}
+#card-sig .content .description .image img{
+  float: right;
+  width: 117px;
+  margin: 0 1px 10px 10px;
+  border-radius: 3px;
+}
+
+#card-sketch{
+    width: 500px;
+}
+
+.plot_container{
+    margin: 10px 10px 0 10px;
+}
+
+#card-results{
+    width: 500px;
+}
+
+.comments{
+    padding: 2em 0;
+    width: 100%;
+    clear: both;
+}
+
+
+@media only screen and (max-width: 767px){
+    body{
+        padding: 0 1em;
+    }
+    #sink .demo.container {
+        width: 100%;
+    }
+    .demo.container > .steps , #card-pic{
+        width: 100%;
+    }
+    #card-pic .image{
+        text-align: center;
+        background: #fff;
+    }
+    #chosen-pic {
+        max-width: 200px;
+        margin: 0 auto;
+    }
+    .tab{
+        float: left;
+        clear: both;
+        width: 100%;
+    }
+}
+
+.ui.footer{
+  padding: 2em 0;
+}

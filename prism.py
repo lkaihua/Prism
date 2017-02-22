@@ -14,6 +14,9 @@ samples = [ 2158,  7418,  7757,  9824, 22039, 16336,  7463,  4595, 20159,
        17348, 19166, 23112, 16678,  2084, 11398, 19557, 14867,  5437,
        13122, 20811]
 
+# 24k pictures in total
+population = 24000
+
 # ======  sig ======
 # des: generate a signature based on colour information
 # arg: file, file name
@@ -79,12 +82,12 @@ def cossim_3(x, y):
 def bin_size():
     for i in (2, 4, 8, 16, 32, 64):
         # compare image collections of two objects
-        a1 = sig('../../251_l3c1.png', i)
-        a2 = sig('../../251_l3c2.png', i)
-        a3 = sig('../../251_l3c3.png', i)
-        b1 = sig('../../255_l3c1.png', i)
-        b2 = sig('../../255_l3c2.png', i)
-        b3 = sig('../../255_l3c3.png', i)
+        a1 = sig('dataset/251_l3c1.png', i)
+        a2 = sig('dataset/251_l3c2.png', i)
+        a3 = sig('dataset/251_l3c3.png', i)
+        b1 = sig('dataset/255_l3c1.png', i)
+        b2 = sig('dataset/255_l3c2.png', i)
+        b3 = sig('dataset/255_l3c3.png', i)
 
         print "====== i:", i, " ======"
         print '& $A_1$ &',cossim_3(a1, a1), '&',cossim_3(a1, a2), '&',cossim_3(a1, a3), '&',cossim_3(a1, b1), '&',cossim_3(a1, b2), '&',cossim_3(a1, b3), '\\\\ \cline{2-8}'
@@ -110,7 +113,7 @@ def line2id(line):
 
 
 def gen_sig(start=1, end=1000):
-    file = open("sig.txt", "w")
+    file = open("result/sig.txt", "w")
     t0 = time.clock()
 
     for i in range(start, end + 1):
@@ -128,7 +131,7 @@ def gen_sig(start=1, end=1000):
 
 def open_sig():
     t0 = time.clock()
-    m = loadtxt("sig.txt")
+    m = loadtxt("result/sig.txt")
     print time.clock() - t0, "seconds in opening signatures"
     return m
 
@@ -138,52 +141,52 @@ def gen_matrix():
 
     sketches = open_sketch()
 
-    # sketch is 100 * 24,000
+    # sketch has #vectors rows and #image columns
     # every row is result multipied by one random vector
     result = dot(sketches.transpose(), sketches)
 
     # save result
     print time.clock() - t0, "seconds in generating matrix"
 
-    m = zeros([20, 24000])
+    m = zeros([len(samples), population])
 
     for i in range(len(samples)):
         m[i] =  result[samples[i]]
-    savetxt('m100.txt', m, fmt='%i')
+    savetxt('result/matrix-sample.txt', m, fmt='%i')
 
 def gen_cos():
     sig = open_sig()
-    s = zeros([20, 24000])
+    s = zeros([len(samples), population])
     for i in range(len(samples)):
-        for j in range(0, 24000):
+        for j in range(0, population):
             s[i][j] =  cossim_3(sig[samples[i]], sig[j])
-    savetxt('s100.txt', s, fmt='%.3f')
+    savetxt('result/similarity-sample.txt', s, fmt='%.3f')
 
 # def open_matrix():
 #     t0 = time.clock()
-#     m = loadtxt("matrix.txt")
+#     m = loadtxt("('result/matrix.txt")
 #     print time.clock() - t0, "seconds in opening signatures"
 #     return m.shape
 
 
-def gen_sketch(rv_number = 128):
+def gen_sketch(rv_number = 256):
     t0 = time.clock()
     m = open_sig()
     print "signature matrix size is {0} x {1}".format(m.shape[0], m.shape[1])
     sketches = sketch(m, rv_number)
     print "sketch matrix size is {0} x {1}".format(sketches.shape[0], sketches.shape[1])
     print time.clock() - t0, "seconds in generating sketches"
-    savetxt('sketch.txt', sketches, fmt='%d')
+    savetxt('result/sketch.txt', sketches, fmt='%d')
 
 def open_sketch():
     t0 = time.clock()
-    m = loadtxt("sketch.txt")
+    m = loadtxt("result/sketch.txt")
     print time.clock() - t0, "seconds in opening sketches"
     return m
 
 
 def gen_similar(i, j, k):
-    # m = loadtxt("sim.txt")
+    # m = loadtxt("result/sim.txt")
 
     # only calculate all pairs of given image with rest images
     line = id2line(i, j, k)
@@ -240,13 +243,11 @@ def gen_similar_all():
         return result
 
     # only calculate all pairs of given image with rest images
-    file = open("all.sql.txt", "w")
-    end = 24001
-    # end = 3
+    file = open("result/all.sql.txt", "w")
 
     sketches = open_sketch()
 
-    for i in range(1, end):
+    for i in range(1, population + 1):
 
         t0 = time.clock()
         pre_sim = transpose_dot(sketches, i)
@@ -282,19 +283,29 @@ if __name__ == "__main__":
 
     if c == "sig":
         gen_sig()
+
     elif c == "sketch":
-        gen_sketch(int(sys.argv[2]))
+        if len(sys.argv) > 2:
+            rv = int(sys.argv[2])
+        else:
+            rv = 256
+        gen_sketch(rv)
+
+    elif c == "cos":
+        gen_cos()
+
+    elif c == "matrix":
+        gen_matrix()
+
     elif c == "similar":
         gen_similar(
             int(sys.argv[2]),
             int(sys.argv[3]),
             int(sys.argv[4])
         )
-    elif c == "matrix":
-        gen_matrix()
-    elif c == "cos":
-        gen_cos()
+
     elif c == "all":
         gen_similar_all()
+        
     else:
         bin_size()
