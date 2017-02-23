@@ -44,19 +44,31 @@ To be optimized:
 
 *R-squared* is a statistical measure of how close the data are to the fitted regression line. Selecting *256* vectors ensures a r-squared greater than `0.9`.
 
-## Methodology
+## Usage
 
-This project is based on Python. Recommend [another article](https://cran.r-project.org/web/packages/textreuse/vignettes/textreuse-minhash.html) explaining this solution of *minhash* and *LSH* in R.
+Options
+    * sig       : generate Signatures based on the colours distribution.
+    * sketch    : generate Sketches based on Signatures.
+    * cos       : calculate the Cosine Similarity between samples and all population.
+    * matrix    : calculate the similarity matrix based on Sketches
+    * similar   : find similar candidates for one image
+    * all       : find similar candidates for all images, generate a mongodb sql as output
+    * bin_size  : experiments to optimize bin size
+
+## Methodology
 
 ![LSH S-curves](screenshot/s-curve.png)
 
-LSH S-curves.
+Recommend [another article](https://cran.r-project.org/web/packages/textreuse/vignettes/textreuse-minhash.html) explaining this solution of *minhash* and *LSH* in R. 
+
+This discussion on [stackoverflow](http://stackoverflow.com/questions/12952729/how-to-understand-locality-sensitive-hashing) introduces the *LSH* approach of *Cosine Similarity*. 
+
 
 ## Dataset
 
 ![aloi](http://aloi.science.uva.nl/aloi/aloi.jpg)
 
-[*ALOI*](http://aloi.science.uva.nl/) is a color image collection of one-thousand small objects, recorded for scientific purposes. In order to capture the sensory variation in object recordings, we systematically varied viewing angle, illumination angle, and illumination color for each object, and additionally captured wide-baseline stereo images. We recorded over a hundred images of each object, yielding a total of 110,250 images for the collection.
+[ALOI](http://aloi.science.uva.nl/) is a color image collection of one-thousand small objects, recorded for scientific purposes. In order to capture the sensory variation in object recordings, we systematically varied viewing angle, illumination angle, and illumination color for each object, and additionally captured wide-baseline stereo images. We recorded over a hundred images of each object, yielding a total of 110,250 images for the collection.
 
 ![ill](http://aloi.science.uva.nl/aloi/ill.jpg)
 

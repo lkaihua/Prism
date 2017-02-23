@@ -1,5 +1,7 @@
-# Project: Prism
-# Author: Kain Liu
+'''
+Project: Prism
+Author: Kain Liu
+'''
 
 from PIL import Image
 from cossim import cossim
@@ -9,19 +11,24 @@ import time
 import os, sys
 import scipy.spatial.distance as dis
 
-# sample id of images
-samples = [ 2158,  7418,  7757,  9824, 22039, 16336,  7463,  4595, 20159,
-       17348, 19166, 23112, 16678,  2084, 11398, 19557, 14867,  5437,
-       13122, 20811]
 
 # 24k pictures in total
 population = 24000
 
-# ======  sig ======
-# des: generate a signature based on colour information
-# arg: file, file name
-#      seg, number of segmentation, by default is 4
-def sig(file, seg=4):
+# random vector
+rv_number = 256
+
+# sample id of images
+samples = [ 2158,  7418, 7757, 9824, 22039, 
+            16336, 7463, 4595, 20159, 17348, 
+            19166, 23112, 16678,  2084, 11398, 
+            19557, 14867,  5437, 13122, 20811]
+
+
+'''
+Generate a signature based on colour information
+'''
+def color_sig(file, seg = 4):
     print file
     try:
         im = Image.open(file)
@@ -44,6 +51,7 @@ def sig(file, seg=4):
             key.append(cut(x, seg))
         key = str(key)
         color_counter.setdefault(key, []).append(color[0])
+
 
     hash_result = []
 
@@ -73,22 +81,22 @@ def sig(file, seg=4):
 
     return hash_result
 
-def cossim_3(x, y):
-    return round(cossim(x, y), 3)
 
-# ====== bin_size ======
-# des: calculate which size is the best choice for bins
-# result: i = 4 
+
+'''
+calculate which size is the best choice for bins
+'''
 def bin_size():
     for i in (2, 4, 8, 16, 32, 64):
         # compare image collections of two objects
-        a1 = sig('dataset/251_l3c1.png', i)
-        a2 = sig('dataset/251_l3c2.png', i)
-        a3 = sig('dataset/251_l3c3.png', i)
-        b1 = sig('dataset/255_l3c1.png', i)
-        b2 = sig('dataset/255_l3c2.png', i)
-        b3 = sig('dataset/255_l3c3.png', i)
+        a1 = color_sig('dataset/251_l3c1.png', i)
+        a2 = color_sig('dataset/251_l3c2.png', i)
+        a3 = color_sig('dataset/251_l3c3.png', i)
+        b1 = color_sig('dataset/255_l3c1.png', i)
+        b2 = color_sig('dataset/255_l3c2.png', i)
+        b3 = color_sig('dataset/255_l3c3.png', i)
 
+        # generate a latex table
         print "====== i:", i, " ======"
         print '& $A_1$ &',cossim_3(a1, a1), '&',cossim_3(a1, a2), '&',cossim_3(a1, a3), '&',cossim_3(a1, b1), '&',cossim_3(a1, b2), '&',cossim_3(a1, b3), '\\\\ \cline{2-8}'
         print '& $A_2$ &',cossim_3(a2, a1), '&',cossim_3(a2, a2), '&',cossim_3(a2, a3), '&',cossim_3(a2, b1), '&',cossim_3(a2, b2), '&',cossim_3(a2, b3), '\\\\ \cline{2-8}'
@@ -98,28 +106,14 @@ def bin_size():
         print '& $B_3$ &',cossim_3(b3, a1), '&',cossim_3(b3, a2), '&',cossim_3(b3, a3), '&',cossim_3(b3, b1), '&',cossim_3(b3, b2), '&',cossim_3(b3, b3), '\\\\ \cline{2-8}'
 
 
-def id2path(i, j, k):
-    return "dataset/{0}/{0}_l{1}c{2}.png".format(i, j, k)
-
-def id2line(i, j, k):
-    line = (i - 1) * 24 + (j - 1) * 3 + (k - 1)
-    return line
-
-def line2id(line):
-    a = line / 24 + 1
-    b = line % 24 / 3 + 1
-    c = line % 24 % 3 + 1
-    return a, b, c
-
-
-def gen_sig(start=1, end=1000):
+def sig(start = 1, end = 1000):
     file = open("result/sig.txt", "w")
     t0 = time.clock()
 
     for i in range(start, end + 1):
         for j in range(1, 9):
             for k in range(1, 4):
-                h = sig(id2path(i, j, k))
+                h = color_sig(id2path(i, j, k))
                 file.write(str(h).replace(",","").replace("[","").replace("]",""))
                 file.write("\n")
         print "{0} of {1}".format(i, end - start + 1)
@@ -129,16 +123,10 @@ def gen_sig(start=1, end=1000):
     print time.clock() - t0, "seconds in generating signatures"
 
 
-def open_sig():
-    t0 = time.clock()
-    m = loadtxt("result/sig.txt")
-    print time.clock() - t0, "seconds in opening signatures"
-    return m
 
-def gen_matrix():
+def matrix():
 
     t0 = time.clock()
-
     sketches = open_sketch()
 
     # sketch has #vectors rows and #image columns
@@ -154,7 +142,7 @@ def gen_matrix():
         m[i] =  result[samples[i]]
     savetxt('result/matrix-sample.txt', m, fmt='%i')
 
-def gen_cos():
+def cos():
     sig = open_sig()
     s = zeros([len(samples), population])
     for i in range(len(samples)):
@@ -162,14 +150,10 @@ def gen_cos():
             s[i][j] =  cossim_3(sig[samples[i]], sig[j])
     savetxt('result/similarity-sample.txt', s, fmt='%.3f')
 
-# def open_matrix():
-#     t0 = time.clock()
-#     m = loadtxt("('result/matrix.txt")
-#     print time.clock() - t0, "seconds in opening signatures"
-#     return m.shape
 
 
-def gen_sketch(rv_number = 256):
+
+def sketch():
     t0 = time.clock()
     m = open_sig()
     print "signature matrix size is {0} x {1}".format(m.shape[0], m.shape[1])
@@ -178,15 +162,9 @@ def gen_sketch(rv_number = 256):
     print time.clock() - t0, "seconds in generating sketches"
     savetxt('result/sketch.txt', sketches, fmt='%d')
 
-def open_sketch():
-    t0 = time.clock()
-    m = loadtxt("result/sketch.txt")
-    print time.clock() - t0, "seconds in opening sketches"
-    return m
 
 
-def gen_similar(i, j, k):
-    # m = loadtxt("result/sim.txt")
+def similar(i, j, k):
 
     # only calculate all pairs of given image with rest images
     line = id2line(i, j, k)
@@ -232,22 +210,21 @@ def gen_similar(i, j, k):
 
     print time.clock() - t0, "seconds in finding similar items"
     print result
-    # print " ".join(path)
-    # os.system("open "+" ".join(path))
+   
 
-
-def gen_similar_all():
+def similar_all():
 
     def transpose_dot(_sketches, _line):
         result = dot(_sketches.transpose()[_line], _sketches)
         return result
 
     # only calculate all pairs of given image with rest images
-    file = open("result/all.sql.txt", "w")
+    file = open("result/all-to-mongodb.txt", "w")
 
     sketches = open_sketch()
 
-    for i in range(1, population + 1):
+    t00 = time.clock()
+    for i in range(0, population):
 
         t0 = time.clock()
         pre_sim = transpose_dot(sketches, i)
@@ -264,48 +241,115 @@ def gen_similar_all():
             result.append( di )
             path.append( id2path(di[0],di[1],di[2]) )
 
-        print time.clock() - t0, "seconds in finding similar items"
-        print '=== ', i, ' ==='
+        print i, ' : ', time.clock() - t0, "s"
         # print result
-        # os.system("open "+" ".join(path))
-        file.write("insert into sim (pic, candi) values ( {0} , '{1}' );".format(i, " ".join(path)))
+
+        # Mongodb insert similar neighbors for each picture
+        # print(i, path)
+        file.write("db.similarPic.insert({{ id: {} , neighbors: {} }})".format(i, path))
         file.write("\n")
+    print "Total {}s".format(time.clock() - t00)
     file.close()
 
+'''
+loader functions
+'''
 
-# main
+def open_sig():
+    t0 = time.clock()
+    m = loadtxt("result/sig.txt")
+    print time.clock() - t0, "seconds in opening signatures"
+    return m
+    
+# def open_matrix():
+#     t0 = time.clock()
+#     m = loadtxt("('result/matrix.txt")
+#     print time.clock() - t0, "seconds in opening signatures"
+#     return m.shape
 
+def open_sketch():
+    t0 = time.clock()
+    m = loadtxt("result/sketch.txt")
+    print time.clock() - t0, "seconds in opening sketches"
+    return m
+
+
+'''
+helper functions
+'''
+
+def id2path(i, j, k):
+    return "dataset/{0}/{0}_l{1}c{2}.png".format(i, j, k)
+
+def id2line(i, j, k):
+    line = (i - 1) * 24 + (j - 1) * 3 + (k - 1)
+    return line
+
+def line2id(line):
+    a = line / 24 + 1
+    b = line % 24 / 3 + 1
+    c = line % 24 % 3 + 1
+    return a, b, c
+
+def cossim_3(x, y):
+    return round(cossim(x, y), 3)
+
+'''
+main function
+'''
 if __name__ == "__main__":
 
-    c = ''
-    if len(sys.argv) > 1:
-        c = sys.argv[1]
+    c = sys.argv[1] if len(sys.argv) > 1 else ""
 
     if c == "sig":
-        gen_sig()
+        sig()
 
     elif c == "sketch":
         if len(sys.argv) > 2:
             rv = int(sys.argv[2])
         else:
             rv = 256
-        gen_sketch(rv)
+        print 'INFO: ', rv, ' random vectors'
+        sketch(rv)
 
     elif c == "cos":
-        gen_cos()
+        cos()
 
     elif c == "matrix":
-        gen_matrix()
+        matrix()
 
     elif c == "similar":
-        gen_similar(
-            int(sys.argv[2]),
-            int(sys.argv[3]),
-            int(sys.argv[4])
-        )
+        if len(sys.argv) > 4:
+            similar(
+                int(sys.argv[2]),
+                int(sys.argv[3]),
+                int(sys.argv[4])
+            )
+        else:
+            print 'ERROR: Please identify the picture id.'
 
     elif c == "all":
-        gen_similar_all()
-        
-    else:
+        similar_all()
+
+    elif c == 'lsh':
+        lsh_all()
+
+    elif c == 'bin_size':
         bin_size()
+
+    else:
+        print '''
+        
+    Welcome to Prism.
+
+    Options:
+
+    * sig       : generate Signatures based on the colours distribution.
+    * sketch    : generate Sketches based on Signatures.
+    * cos       : calculate the Cosine Similarity between samples and all population.
+    * matrix    : calculate the similarity matrix based on Sketeches
+    * similar   : find similar candidates for one image
+    * all       : find similar candidates for all images, generate a mongdb sql as output
+    * bin_size  : experiments to optimize bin size
+
+        '''
