@@ -47,13 +47,14 @@ To be optimized:
 ## Usage
 
 Options
-    * sig       : generate Signatures based on the colours distribution.
-    * sketch    : generate Sketches based on Signatures.
-    * cos       : calculate the Cosine Similarity between samples and all population.
-    * matrix    : calculate the similarity matrix based on Sketches
-    * similar   : find similar candidates for one image
-    * all       : find similar candidates for all images, generate a mongodb sql as output
-    * bin_size  : experiments to optimize bin size
+
+ * `sig      ` : generate Signatures based on the colours distribution.
+ * `sketch   ` : generate Sketches based on Signatures.
+ * `cos      ` : calculate the Cosine Similarity between samples and all population.
+ * `matrix   ` : calculate the similarity matrix based on Sketches
+ * `similar  ` : find similar candidates for one image
+ * `all      ` : find similar candidates for all images, generate a mongodb sql as output
+ * `bin_size ` : experiments to optimize bin size
 
 ## Methodology
 
