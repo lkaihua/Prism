@@ -61,6 +61,7 @@ Options
 
 Recommend [another article](https://cran.r-project.org/web/packages/textreuse/vignettes/textreuse-minhash.html) explaining this solution of *minhash* and *LSH* in R. 
 
+![cos-sim](https://i.stack.imgur.com/27nSY.png)
 This discussion on [stackoverflow](http://stackoverflow.com/questions/12952729/how-to-understand-locality-sensitive-hashing) introduces the *LSH* approach of *Cosine Similarity*. 
 
 
