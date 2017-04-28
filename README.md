@@ -1,12 +1,15 @@
 # Prism
 
-An image quick clustering tool based on colour spectrum.
+A tool to find nearest neighbors in images dataset based on color similarity. 
+
+Introduction: <https://kainliu.github.io/posts/find-similar-images-based-on-locality-sensitive-hashing/>
+
+## Introduction
 
 ![page-001](screenshot/prism-page-001.jpg)
 
 Prism starts with the color spectrum of images to generate *signatures*, abstract compact *minhash sketches*, and apply with *LSH*(locality-sensitive hashing) to find inner clusters.
 
-## Introduction
 
 ### Plot a signature
 
@@ -44,7 +47,7 @@ To be optimized:
 
 *R-squared* is a statistical measure of how close the data are to the fitted regression line. Selecting *256* vectors ensures a r-squared greater than `0.9`.
 
-## Usage
+## Script Command
 
 Options
 
