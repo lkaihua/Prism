@@ -2,9 +2,9 @@
 
 A tool to quickly find nearest neighbors in images dataset based on color similarities. Features are abstracted from color distribution of images, and with Locality Sensitive Hashing, small-sized sketches are generated to estimate cosine similarities. Prism provides a web-based interface to explain the process from feature extraction to finding most similar images. 
 
-Introduction: <https://kainliu.github.io/posts/find-similar-images-based-on-locality-sensitive-hashing/>
+<https://kainliu.github.io/posts/find-similar-images-based-on-locality-sensitive-hashing/>
 
-## Introduction
+## Interface
 
 ![page-001](screenshot/prism-page-001.jpg)
 
